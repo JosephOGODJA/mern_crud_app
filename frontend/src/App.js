@@ -8,8 +8,13 @@ function App() {
     title: "",
     body: "",
   });
-
-  // UseEffetc
+  const [updateForm, setUpdateForm] = useState({
+    _id: null,
+    title: "",
+    body: "",
+  });
+  
+  // UseEffect
   useEffect(() => {
     fetchNotes();
   }, [])
@@ -49,7 +54,7 @@ function App() {
 
   const deleteNote = async (_id) => {
     // Delete the note
-    const res = await axios.delete(`http://localhost:3000/notes/${_id}`);
+    await axios.delete(`http://localhost:3000/notes/${_id}`);
     //console.log(res);
 
     // Update the state
@@ -59,6 +64,15 @@ function App() {
 
     setNotes(newNotes);
   };
+
+  const handleUpdateChange = (e) => {
+    const { value, name} = e.target
+
+    setUpdateForm({
+      ...updateForm,
+      [name]: value,
+    })
+  }
 
   return (
     <>
@@ -72,6 +86,25 @@ function App() {
               </div>
             })}
         </div>
+      </div>
+
+      <div>
+        <h2>Update Note</h2>
+        <form>
+          <input 
+            value={updateForm.title}
+            name="title"
+          />
+          
+          <textarea
+            onChange={handleUpdateChange}
+            value={updateForm.body}
+            name="body"
+          />
+          
+          <button type="submit">Update Note
+          </button>
+        </form>
       </div>
 
       <div>
